@@ -29,3 +29,37 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    GuzzleHttp\Client:
+
+    App\ApiClient\OpenWeatherMap\OpenWeatherMapClient:
+        arguments:
+            - '@GuzzleHttp\Client'
+            - '@App\ApiClient\OpenWeatherMap\OpenWeatherMapRequestFactory'
+
+    App\ApiClient\OpenWeatherMap\OpenWeatherMapRequestFactory:
+        arguments:
+            $apiKey: 'ec1b5429c5498efeda2686ab340e9f89'
+
+    App\Weather\Provider\OpenWeatherMapAdapter:
+        tags:
+            - { name: 'app.weather.provider', key: 'openWeatherMap' }
+        arguments:
+            - '@App\ApiClient\OpenWeatherMap\OpenWeatherMapClient'
+
+    App\ApiClient\Weatherbit\WeatherbitClient:
+        arguments:
+            - '@GuzzleHttp\Client'
+            - '@App\ApiClient\Weatherbit\WeatherbitRequestFactory'
+
+    App\ApiClient\Weatherbit\WeatherbitRequestFactory:
+        arguments:
+            $apiKey: '4907a88830ef49e6b7e371ddc020ed9a'
+
+    App\Weather\Provider\WeatherbitAdapter:
+        tags:
+            - { name: 'app.weather.provider', key: 'weatherbit' }
+        arguments:
+            - '@App\ApiClient\Weatherbit\WeatherbitClient'
+
+    App\Weather\WeatherProviderCollection:
+        arguments: [!tagged { tag: 'app.weather.provider', index_by: 'key' }]
