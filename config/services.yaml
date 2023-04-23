@@ -2,8 +2,16 @@
 # Files in the packages/ subdirectory configure your dependencies.
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app:
+        weatherprovider:
+            openweathermap:
+                url: 'https://api.openweathermap.org/data/2.5/'
+                secret: '%env(OPENWEATHERMAP_SECRET)%'
+            weatherbit:
+                url: 'https://api.weatherbit.io/v2.0/'
+                secret: '%env(WEATHERBIT_SECRET)%'
 
 services:
     # default configuration for services in *this* file
@@ -19,47 +27,25 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-            - '../src/Tests/'
-
-    # controllers are imported separately to make sure services can be injected
-    # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
+            - '../src/Temperature/**/{Entity,Dto,ValueObject,Exception}'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    GuzzleHttp\Client:
 
-    App\ApiClient\OpenWeatherMap\OpenWeatherMapClient:
+    App\Temperature\Infrastructure\ApiClient\OpenWeatherMap\OpenWeatherMapClient:
         arguments:
-            - '@GuzzleHttp\Client'
-            - '@App\ApiClient\OpenWeatherMap\OpenWeatherMapRequestFactory'
+            $url: "@=parameter('app')['weatherprovider']['openweathermap']['url']"
+            $secret: "@=parameter('app')['weatherprovider']['openweathermap']['secret']"
 
-    App\ApiClient\OpenWeatherMap\OpenWeatherMapRequestFactory:
+    App\Temperature\Infrastructure\ApiClient\WeatherBit\WeatherBitClient:
         arguments:
-            $apiKey: 'ec1b5429c5498efeda2686ab340e9f89'
+            $url: "@=parameter('app')['weatherprovider']['weatherbit']['url']"
+            $secret: "@=parameter('app')['weatherprovider']['weatherbit']['secret']"
 
-    App\Weather\Provider\OpenWeatherMapAdapter:
-        tags:
-            - { name: 'app.weather.provider', key: 'openWeatherMap' }
+    App\Temperature\Application\Command\CalculateAverageTemperature\CalculateAverageTemperatureCommandHandler:
         arguments:
-            - '@App\ApiClient\OpenWeatherMap\OpenWeatherMapClient'
+            $temperatureProviders: !tagged_iterator app.temperature_provider
 
-    App\ApiClient\Weatherbit\WeatherbitClient:
-        arguments:
-            - '@GuzzleHttp\Client'
-            - '@App\ApiClient\Weatherbit\WeatherbitRequestFactory'
-
-    App\ApiClient\Weatherbit\WeatherbitRequestFactory:
-        arguments:
-            $apiKey: '4907a88830ef49e6b7e371ddc020ed9a'
-
-    App\Weather\Provider\WeatherbitAdapter:
-        tags:
-            - { name: 'app.weather.provider', key: 'weatherbit' }
-        arguments:
-            - '@App\ApiClient\Weatherbit\WeatherbitClient'
-
-    App\Weather\WeatherProviderCollection:
-        arguments: [!tagged { tag: 'app.weather.provider', index_by: 'key' }]
+    _instanceof:
+        App\Temperature\Application\Command\CalculateAverageTemperature\TemperatureProviderInterface:
+            tags: ['app.temperature_provider']

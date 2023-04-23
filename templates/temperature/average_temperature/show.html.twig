@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AverageTemperature{% endblock %}
+
+{% block body %}
+    <h1>AverageTemperature</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ average_temperature.id }}</td>
+            </tr>
+            <tr>
+                <th>Country</th>
+                <td>{{ average_temperature.country }}</td>
+            </tr>
+            <tr>
+                <th>City</th>
+                <td>{{ average_temperature.city }}</td>
+            </tr>
+            <tr>
+                <th>Average_temperature</th>
+                <td>{{ average_temperature.avgTemperature }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_average_temperature_index') }}">back to list</a>
+
+    <a href="{{ path('app_average_temperature_edit', {'id': average_temperature.id}) }}">edit</a>
+
+    {{ include('temperature/average_temperature/_delete_form.html.twig') }}
+{% endblock %}

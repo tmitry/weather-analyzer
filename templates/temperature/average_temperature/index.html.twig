@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}AverageTemperature index{% endblock %}
+
+{% block body %}
+    <h1>AverageTemperature index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Country</th>
+                <th>City</th>
+                <th>Average_temperature</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for average_temperature in average_temperatures %}
+            <tr>
+                <td>{{ average_temperature.id }}</td>
+                <td>{{ average_temperature.country }}</td>
+                <td>{{ average_temperature.city }}</td>
+                <td>{{ average_temperature.avgTemperature }}</td>
+                <td>
+                    <a href="{{ path('app_average_temperature_show', {'id': average_temperature.id}) }}">show</a>
+                    <a href="{{ path('app_average_temperature_edit', {'id': average_temperature.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_average_temperature_new') }}">Create new</a>
+{% endblock %}

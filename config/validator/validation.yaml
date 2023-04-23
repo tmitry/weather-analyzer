@@ -1,0 +1,21 @@
+App\Temperature\Application\Command\CreateAverageTemperature\CreateAverageTemperatureCommand:
+    properties:
+        country:
+            -   NotBlank: ~
+            -   Length:
+                    min: 3
+        city:
+            -   NotBlank: ~
+            -   Length:
+                    min: 3
+
+App\Temperature\Application\Command\UpdateAverageTemperature\UpdateAverageTemperatureCommand:
+    properties:
+        country:
+            -   NotBlank: ~
+            -   Length:
+                    min: 3
+        city:
+            -   NotBlank: ~
+            -   Length:
+                    min: 3

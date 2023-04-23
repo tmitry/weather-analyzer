@@ -1,0 +1,20 @@
+App\Temperature\Domain\Entity\AverageTemperature:
+    type: entity
+    repositoryClass: App\Temperature\Infrastructure\Doctrine\Repository\AverageTemperatureRepository
+    table: average_temperature
+    id:
+        id:
+            type: uuid
+            unique: true
+    fields:
+        country:
+            type: string
+            length: 255
+        city:
+            type: string
+            length: 255
+        avg_temperature:
+            type: decimal
+            precision: 10
+            scale: 2
+            nullable: true
