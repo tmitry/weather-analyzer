@@ -1,0 +1,9 @@
+App\Temperature\Domain\Entity\Location:
+    type: embeddable
+    fields:
+        country:
+            type: string
+            length: 255
+        city:
+            type: string
+            length: 255

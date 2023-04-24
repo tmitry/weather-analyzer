@@ -7,14 +7,13 @@ App\Temperature\Domain\Entity\AverageTemperature:
             type: uuid
             unique: true
     fields:
-        country:
-            type: string
-            length: 255
-        city:
-            type: string
-            length: 255
-        avg_temperature:
+        avgTemperature:
             type: decimal
+            column: avg_temperature
             precision: 10
             scale: 2
             nullable: true
+    embedded:
+        location:
+            class: App\Temperature\Domain\Entity\Location
+            columnPrefix: false

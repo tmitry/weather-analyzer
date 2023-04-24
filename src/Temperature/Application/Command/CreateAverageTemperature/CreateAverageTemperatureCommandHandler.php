@@ -7,6 +7,7 @@ namespace App\Temperature\Application\Command\CreateAverageTemperature;
 use App\Temperature\Application\Exception\ValidationException;
 use App\Temperature\Application\Message\CalculateAverageTemperatureMessage;
 use App\Temperature\Domain\Entity\AverageTemperature;
+use App\Temperature\Domain\Entity\Location;
 use App\Temperature\Domain\Repository\AverageTemperatureRepositoryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Uuid;
@@ -31,10 +32,14 @@ readonly class CreateAverageTemperatureCommandHandler
 
         $id = $this->generateId();
 
+        $location = new Location(
+            $createAverageTemperatureCommand->getCountry(),
+            $createAverageTemperatureCommand->getCity()
+        );
+
         $averageTemperature = new AverageTemperature(
             $id,
-            $createAverageTemperatureCommand->getCountry(),
-            $createAverageTemperatureCommand->getCity(),
+            $location,
             null
         );
 

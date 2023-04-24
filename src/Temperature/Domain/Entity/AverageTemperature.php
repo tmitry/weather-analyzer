@@ -10,18 +10,15 @@ class AverageTemperature
 {
     private Uuid $id;
 
-    private string $country;
+    private Location $location;
 
-    private string $city;
+    private ?string $avgTemperature;
 
-    private ?string $avg_temperature;
-
-    public function __construct(Uuid $id, string $country, string $city, ?string $avg_temperature)
+    public function __construct(Uuid $id, Location $location, ?string $avgTemperature)
     {
         $this->id = $id;
-        $this->country = $country;
-        $this->city = $city;
-        $this->avg_temperature = $avg_temperature;
+        $this->location = $location;
+        $this->avgTemperature = $avgTemperature;
     }
 
     public function getId(): Uuid
@@ -29,33 +26,23 @@ class AverageTemperature
         return $this->id;
     }
 
-    public function getCountry(): string
+    public function getLocation(): Location
     {
-        return $this->country;
+        return $this->location;
     }
 
-    public function setCountry(string $country): void
+    public function setLocation(Location $location): void
     {
-        $this->country = $country;
-    }
-
-    public function getCity(): string
-    {
-        return $this->city;
-    }
-
-    public function setCity(string $city): void
-    {
-        $this->city = $city;
+        $this->location = $location;
     }
 
     public function getAvgTemperature(): ?string
     {
-        return $this->avg_temperature;
+        return $this->avgTemperature;
     }
 
-    public function setAvgTemperature(?string $avg_temperature): void
+    public function setAvgTemperature(?string $avgTemperature): void
     {
-        $this->avg_temperature = $avg_temperature;
+        $this->avgTemperature = $avgTemperature;
     }
 }

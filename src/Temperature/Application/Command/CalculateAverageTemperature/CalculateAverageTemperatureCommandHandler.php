@@ -29,8 +29,8 @@ readonly class CalculateAverageTemperatureCommandHandler
         $sum = 0;
         foreach ($this->temperatureProviders as $temperatureProvider) {
             $temperatureDto = $temperatureProvider->getTemperature(
-                $averageTemperature->getCountry(),
-                $averageTemperature->getCity()
+                $averageTemperature->getLocation()->getCountry(),
+                $averageTemperature->getLocation()->getCity(),
             );
 
             $sum += $temperatureDto->getTemperature();

@@ -88,8 +88,8 @@ class AverageTemperatureController extends AbstractController
         }
 
         $updateAverageTemperatureCommand = new UpdateAverageTemperatureCommand(
-            $averageTemperature->getCountry(),
-            $averageTemperature->getCity(),
+            $averageTemperature->getLocation()->getCountry(),
+            $averageTemperature->getLocation()->getCity(),
         );
 
         $form = $this->createForm(UpdateAverageTemperatureCommandType::class, $updateAverageTemperatureCommand);

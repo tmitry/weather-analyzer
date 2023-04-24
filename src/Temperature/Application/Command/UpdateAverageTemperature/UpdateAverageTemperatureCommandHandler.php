@@ -7,6 +7,7 @@ namespace App\Temperature\Application\Command\UpdateAverageTemperature;
 use App\Temperature\Application\Exception\NotFoundException;
 use App\Temperature\Application\Exception\ValidationException;
 use App\Temperature\Application\Message\CalculateAverageTemperatureMessage;
+use App\Temperature\Domain\Entity\Location;
 use App\Temperature\Domain\Repository\AverageTemperatureRepositoryInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Uid\Uuid;
@@ -36,8 +37,12 @@ readonly class UpdateAverageTemperatureCommandHandler
             throw new NotFoundException();
         }
 
-        $averageTemperature->setCountry($updateAverageTemperatureCommand->getCountry());
-        $averageTemperature->setCity($updateAverageTemperatureCommand->getCity());
+        $location = new Location(
+            $updateAverageTemperatureCommand->getCountry(),
+            $updateAverageTemperatureCommand->getCity(),
+        );
+
+        $averageTemperature->setLocation($location);
 
         $this->averageTemperatureRepository->save($averageTemperature, true);
 

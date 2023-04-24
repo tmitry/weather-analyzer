@@ -19,8 +19,8 @@
         {% for average_temperature in average_temperatures %}
             <tr>
                 <td>{{ average_temperature.id }}</td>
-                <td>{{ average_temperature.country }}</td>
-                <td>{{ average_temperature.city }}</td>
+                <td>{{ average_temperature.location.country }}</td>
+                <td>{{ average_temperature.location.city }}</td>
                 <td>{{ average_temperature.avgTemperature }}</td>
                 <td>
                     <a href="{{ path('app_average_temperature_show', {'id': average_temperature.id}) }}">show</a>
