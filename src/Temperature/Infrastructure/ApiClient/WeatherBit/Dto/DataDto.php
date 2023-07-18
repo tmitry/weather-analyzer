@@ -18,7 +18,7 @@ class DataDto
         public float $dni,
         public float $elev_angle,
         public float $ghi,
-        public float $gust,
+        public ?float $gust,
         public float $h_angle,
         public float $lat,
         public float $lon,

@@ -47,5 +47,5 @@ services:
             $temperatureProviders: !tagged_iterator app.temperature_provider
 
     _instanceof:
-        App\Temperature\Application\Command\CalculateAverageTemperature\TemperatureProviderInterface:
+        App\Temperature\Domain\TemperatureProviderInterface:
             tags: ['app.temperature_provider']

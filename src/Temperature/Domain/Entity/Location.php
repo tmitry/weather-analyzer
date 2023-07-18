@@ -4,16 +4,12 @@ declare(strict_types=1);
 
 namespace App\Temperature\Domain\Entity;
 
-class Location
+readonly class Location
 {
-    private string $country;
-
-    private string $city;
-
-    public function __construct(string $country, string $city)
-    {
-        $this->country = $country;
-        $this->city = $city;
+    public function __construct(
+        private string $country,
+        private string $city
+    ) {
     }
 
     public function getCountry(): string

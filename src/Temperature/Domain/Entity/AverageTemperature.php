@@ -4,21 +4,16 @@ declare(strict_types=1);
 
 namespace App\Temperature\Domain\Entity;
 
+use App\Temperature\Domain\TemperatureProviderInterface;
 use Symfony\Component\Uid\Uuid;
 
 class AverageTemperature
 {
-    private Uuid $id;
-
-    private Location $location;
-
-    private ?string $avgTemperature;
-
-    public function __construct(Uuid $id, Location $location, ?string $avgTemperature)
-    {
-        $this->id = $id;
-        $this->location = $location;
-        $this->avgTemperature = $avgTemperature;
+    public function __construct(
+        private Uuid $id,
+        private Location $location,
+        private ?string $avgTemperature
+    ) {
     }
 
     public function getId(): Uuid
@@ -41,8 +36,25 @@ class AverageTemperature
         return $this->avgTemperature;
     }
 
-    public function setAvgTemperature(?string $avgTemperature): void
+    /**
+     * @param iterable<TemperatureProviderInterface> $temperatureProviders
+     * @return void
+     */
+    public function updateAvgTemperature(iterable $temperatureProviders): void
     {
-        $this->avgTemperature = $avgTemperature;
+        $count = count($temperatureProviders);
+        $sum = 0;
+        foreach ($temperatureProviders as $temperatureProvider) {
+            $temperatureDto = $temperatureProvider->getTemperature(
+                $this->getLocation()->getCountry(),
+                $this->getLocation()->getCity(),
+            );
+
+            $sum += $temperatureDto->getTemperature();
+        }
+
+        $avg = $count === 0 ? 0 : round($sum / $count, 2);
+
+        $this->avgTemperature = (string) $avg;
     }
 }

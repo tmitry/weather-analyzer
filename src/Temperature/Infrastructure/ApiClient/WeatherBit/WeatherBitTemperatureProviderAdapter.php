@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Temperature\Infrastructure\ApiClient\WeatherBit;
 
-use App\Temperature\Application\Command\CalculateAverageTemperature\Dto\TemperatureDto;
-use App\Temperature\Application\Command\CalculateAverageTemperature\TemperatureProviderInterface;
+use App\Temperature\Domain\Dto\TemperatureDto;
+use App\Temperature\Domain\TemperatureProviderInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;

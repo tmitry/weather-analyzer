@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Temperature\Application\Command\CalculateAverageTemperature\Dto;
+namespace App\Temperature\Domain\Dto;
 
 class TemperatureDto
 {

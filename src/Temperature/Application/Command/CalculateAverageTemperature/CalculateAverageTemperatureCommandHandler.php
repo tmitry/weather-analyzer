@@ -6,6 +6,7 @@ namespace App\Temperature\Application\Command\CalculateAverageTemperature;
 
 use App\Temperature\Application\Exception\NotFoundException;
 use App\Temperature\Domain\Repository\AverageTemperatureRepositoryInterface;
+use App\Temperature\Domain\TemperatureProviderInterface;
 use Symfony\Component\Uid\Uuid;
 
 readonly class CalculateAverageTemperatureCommandHandler
@@ -25,20 +26,7 @@ readonly class CalculateAverageTemperatureCommandHandler
             throw new NotFoundException();
         }
 
-        $count = count($this->temperatureProviders);
-        $sum = 0;
-        foreach ($this->temperatureProviders as $temperatureProvider) {
-            $temperatureDto = $temperatureProvider->getTemperature(
-                $averageTemperature->getLocation()->getCountry(),
-                $averageTemperature->getLocation()->getCity(),
-            );
-
-            $sum += $temperatureDto->getTemperature();
-        }
-
-        $avg = $count === 0 ? 0 : round($sum / $count, 2);
-
-        $averageTemperature->setAvgTemperature((string) $avg);
+        $averageTemperature->updateAvgTemperature($this->temperatureProviders);
 
         $this->averageTemperatureRepository->save($averageTemperature, true);
     }
